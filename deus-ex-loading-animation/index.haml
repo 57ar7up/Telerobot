@@ -1,0 +1,31 @@
+.intro
+  %h1 DEUS EX STYLE LOADER
+  %h2 Pure css loader based on the game Deus ex human revolution
+.loader
+  .loader_outer
+    .loader_outer__circle
+      .circle
+      .line
+      .circle_two
+      .line_two
+  .loader_inner
+    .loader_inner__center
+      .inner
+        -(1..180).each do
+          .part
+            .part_inner
+        -(1..90).each do
+          .partSmall
+            .partSmall_inner
+      .outer
+        -(1..150).each do
+          .outer_part
+            .outer_part__inner
+        -(1..130).each do
+          .outer_partSmall
+            .outer_partSmall__inner
+  .loader_ring
+  .loader_inner__text
+    %p <span>This text does'nt really say</span> anything important.<br/><br/><span>It's just to give the impression</span> that some kind of data is being generated from the loader.<br/><br/>Baloney really...
+  .loader_inner__data
+    %p 这意味着绝对没有，但是很酷期待。佳发蛋糕，我喜欢佳发蛋糕和咖啡

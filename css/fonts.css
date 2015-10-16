@@ -1,0 +1,36 @@
+/* font-family: "EtelkaMediumProRegular"; */
+@font-face {
+	font-family: "EtelkaMediumProRegular";
+	src: url("../fonts/EtelkaMediumPro/EtelkaMediumProRegular/EtelkaMediumProRegular.eot");
+	src: url("../fonts/EtelkaMediumPro/EtelkaMediumProRegular/EtelkaMediumProRegular.eot?#iefix")format("embedded-opentype"),
+	url("../fonts/EtelkaMediumPro/EtelkaMediumProRegular/EtelkaMediumProRegular.woff") format("woff"),
+	url("../fonts/EtelkaMediumPro/EtelkaMediumProRegular/EtelkaMediumProRegular.ttf") format("truetype");
+	font-style: normal;
+	font-weight: normal;
+}
+
+/* font-family: "EtelkaMediumProBold"; */
+@font-face {
+	font-family: "EtelkaMediumProBold";
+	src: url("../fonts/EtelkaMediumPro/EtelkaMediumProBold/EtelkaMediumProBold.eot");
+	src: url("../fonts/EtelkaMediumPro/EtelkaMediumProBold/EtelkaMediumProBold.eot?#iefix")format("embedded-opentype"),
+	url("../fonts/EtelkaMediumPro/EtelkaMediumProBold/EtelkaMediumProBold.woff") format("woff"),
+	url("../fonts/EtelkaMediumPro/EtelkaMediumProBold/EtelkaMediumProBold.ttf") format("truetype");
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "CRYSISB";
+	url("../fonts/CRYSIS/CRYSISB.ttf") format("truetype");
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "DeusEx";
+	src: url("../fonts/DeusEx.otf");
+	font-style: normal;
+	font-weight: normal;
+}
+
