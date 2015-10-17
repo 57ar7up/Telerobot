@@ -17,7 +17,7 @@ body {
 	margin: auto;
 
 	color: gold;
-	font: 50px DeusEx;
+	font: 0px DeusEx; /*50px DeusEx;*/
 	border: 1px solid black;
 	background-color: black;
 }
@@ -28,6 +28,7 @@ body {
 
 #stream {
 	width:100%;
+	height: 100%;
 }
 
 #status_keys {
@@ -58,6 +59,7 @@ body {
 #left {
 	width: 17%;
 	float: left;
+	display: none;
 }
 
 #center {

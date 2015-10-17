@@ -80,11 +80,11 @@ function fix_size() {
 		function resize() {
 			if ((container.width() / container.height()) < (img_dom.width / img_dom.height)) {
 				img.width('100%');
-				img.height('auto');
+				img.height('100%');
 				return;
 			}
 			img.height('100%');
-			img.width('auto');
+			img.width('100%');
 		}
 	}
 }

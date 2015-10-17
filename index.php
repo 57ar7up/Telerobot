@@ -44,7 +44,7 @@
 		<script src="keyboard/docs/js/jquery.jui_theme_switch.min.js"></script>
 		<script src='js/keyboard.js'></script>
 		<!-- Keyboard end -->
-		
+
 		<script>
 			$(function(){
 
@@ -63,7 +63,7 @@
 					})*/
 					.keydown(function(event){ //Обработка опускания кнопки клавиатуры
 						// Getting info about current command
-						keycode = event.which;						
+						keycode = event.which;
 						console.info(keycode);
 						//event.preventDefault();
 						process_button(keycode);
@@ -111,7 +111,7 @@
 	</head>
 	<body>
 		<div id='left'>
-			<span id='controls'>Controls</span>
+			<span id='controls'></span>
 		</div>
 		<div id='center'>
 			<div id='screen'>
@@ -145,7 +145,7 @@
 				<button id='controls_sp3'>3</button>
 			</div>
 			<div id='controls_lights'>
-				<button id='controls_lights'>Lights</button>				
+				<button id='controls_lights'>Lights</button>
 			</div>
 		</div>
 </html>
