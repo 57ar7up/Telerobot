@@ -116,7 +116,7 @@
 		<div id='center'>
 			<div id='screen'>
 				<div id='status_keys'></div>
-				<!--<img id='stream' src='http://<? echo $_SERVER['HTTP_HOST']; ?>:8080/?action=stream'></img>-->
+				<img id='stream' src='http://<? echo $_SERVER['HTTP_HOST']; ?>:8080/?action=stream'></img>
 			</div>
 			<div id="wrap">
 				<pre class="prettyprint lang-html">
