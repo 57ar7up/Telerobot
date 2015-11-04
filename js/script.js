@@ -47,8 +47,8 @@ function commands_to_serial_port(commands){
 function keys_to_commands_and_status_keys_display(pressed_keys){
 	var commands = []; console.info(pressed_keys)
 	var keycodes_text = '', commands_text = '';
-	for(var code in pressed_keys){
-		keycode = pressed_keys[code];
+	for(var i=0; i<pressed_keys.length; i++) {
+		keycode = pressed_keys[i];
 		keycodes_text += '<font color=white>' + get_symbol_by_code(keycode, keycodes) + '</font> ';
 		command = get_command_by_code(keycode, uart_mapping);
 		commands_text += '<font color=white>' + command + '</font> ';

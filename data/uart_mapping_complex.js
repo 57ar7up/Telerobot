@@ -1,10 +1,10 @@
 uart_mapping = {
-	"w":			[87, 38],	//forward
-	"s":			[83, 40],	//backward
-	"a":			[65, 37],	//left
-	"d":			[68, 39],	//right
-	"autof":		[16],		//autof
-	"autob":		[82, 97],	//autob
+	"forward":		[87, 38],
+	"backward":		[83, 40],
+	"left":			[65, 37],
+	"right":		[68, 39],
+	"autof":		[16],
+	"autob":		[82, 97],
 	"light":		[17, 18],
 	"sp1":			[49, 46],
 	"sp2":			[50, 35],
@@ -24,9 +24,5 @@ uart_mapping = {
 	"standby":		[13],
 	"reserv":		[9],
 	"1":			[76], // LED on
-	"0":			[75], //LED off
- /* test */
-	"x":			[88],
-	"y":			[89],
-	"z":			[90]
+	"0":			[75] //LED off
 }

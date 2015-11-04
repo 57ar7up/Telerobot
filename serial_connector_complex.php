@@ -4,8 +4,8 @@
 	require 'php_serial.class.php'; //'Submodules/PHP-Serial/src/PhpSerial.php';
 	//require 'Submodules/virtualjoystick.js/virtualjoystick.js';
 
-	$test_mode = FALSE;
-	$uart = '/dev/ttyATH0'; //'/../dev/ttyATH0';
+	$test_mode = TRUE;
+	$device = '/dev/ttyATH0'; //'/../dev/ttyATH0';
 	$baud_rate = 57600;
 
 	if($test_mode)
@@ -13,22 +13,26 @@
 
 	$actions = $_GET['actions'];
 	if(isset($actions)){
-		print_r($actions);
 		$serial = new phpSerial();
-		$serial->deviceSet($uart);
+		$serial->deviceSet($device);
 		$serial->confBaudRate($baud_rate);
 		$serial->deviceOpen();
 
-		$serial->sendMessage($actions[0]);
+		foreach($actions as $action){
+			$serial->sendMessage(0xff);
+			$act = str_split($action);
+			foreach($act as $char)
+				$serial->sendMessage($char);
+		}
 
 		$serial->deviceClose();
 	}
 
 	function serial_test(){
-		global $uart, $baud_rate;
+		global $device, $baud_rate;
 		echo "Test mode";
 		$serial = new phpSerial();
-		$serial->deviceSet($uart);
+		$serial->deviceSet($device);
 		$serial->confBaudRate($baud_rate);
 		$serial->deviceOpen();
 		$serial->sendMessage(1);
@@ -36,7 +40,7 @@
 		exit;
 	}
 /*
-serial_init($uart);
+serial_init($device);
 
 while(true){
 	$msg = readline('> ');//stream_get_line(STDIN, 1, PHP_EOL); // Readline not available on Win, Iduino
