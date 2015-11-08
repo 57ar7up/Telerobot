@@ -11,13 +11,18 @@ const int pin_TX = 1;		//Standard serial transmit pin on Arduino is	1
 const int pin_LED = 13;		//Standard integrated LED pin on Arduino is		13
 AF_DCMotor Motor_l(4);		//Left motor M4
 AF_DCMotor Motor_r(3);		//Right motor M3
+AF_Stepper motor1(200, 1);
+AF_Stepper motor2(200, 2);
 long baud_rate = 57600;	//Speed of Serial Peripheral Interface, 1 baud = 1 bps (bits per second) Can be 2000000. Arduino serial monitor limit is 115200
 int motor_speed = 150;		//Set maximum speed of motor. 0 (0V) - 255 (full voltage)
+
+byte descript[2];
 
 //SoftwareSerial Serial1(pin_RX, pin_TX); //Configuring serial connection with built-in library. Serial buffer is 64 bytes
 /* END OF CONFIG */
 
 void setup(){
+  delay(30000); //To avoid garbage on start
 	Serial.begin(baud_rate); //Start SPI communication
 	//motor_smoothness_test(Motor_l, maximum_speed); return; //Test how motors can run regular and smoothly
 	//Serial1.begin(baud_rate); //Start SPI communication through SoftwareSerial
@@ -28,9 +33,17 @@ void setup(){
 
 void loop(){
   if(Serial.available() > 0){
-    delay(50); // let the buffer fill up
-    
     while(Serial.available() > 0){
+      /*
+      if(Serial.read()=='Y'){
+        for(byte i=0; i < 2; i++){
+          descript[i] = Serial.read();    
+        }        
+        if((descript[0] == 'E')){
+          char current_symbol = descript[1];
+          command_exec(current_symbol);
+        }
+      }*/
       char current_symbol = Serial.read();
       command_exec(current_symbol);
     }
@@ -42,20 +55,24 @@ int command_exec(char command){
 	if(command == 'w'){
 		Motor_l.run(FORWARD);
 		Motor_r.run(FORWARD);
-		//Serial1.println("FORWARD");
+		Serial.println("FORWARD");
 	} else if(command == 's'){
 		Motor_l.run(BACKWARD);
 		Motor_r.run(BACKWARD);
-		//Serial1.println("BACK");
+		Serial.println("BACK");
 	} else if(command == 'a'){
 		Motor_l.run(BACKWARD);
 		Motor_r.run(FORWARD);
-		//Serial1.println("TURN_LEFT");
+		Serial.println("TURN_LEFT");
 	} else if(command == 'd'){
 		Motor_l.run(FORWARD);
 		Motor_r.run(BACKWARD);
-		//Serial1.println("TURN_RIGHT");
+		Serial.println("TURN_RIGHT");
+  } else if(command == ' '){
+    Motor_l.run(RELEASE);
+    Motor_r.run(RELEASE);
+    Serial.println("STOP");
 	} else {
-		//Serial1.println("Unknown command: " + command);
+		Serial.println("Unknown command: " + command);
 	}
 }

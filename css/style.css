@@ -53,7 +53,7 @@ body {
 }
 
 #controls_lights {
-	padding-top: 50px;	
+	padding-top: 50px;
 }
 
 #left {
@@ -68,20 +68,19 @@ body {
 }
 
 #right {
-	display: none;
+	position: absolute;
+	left: 70%;
+	height: 100%;
 	text-align: center;
 	float: right;
 }
 
 button {
-  -webkit-box-shadow: 11px 1px 3px #666666;
-  -moz-box-shadow: 11px 1px 3px #666666;
-  box-shadow: 11px 1px 3px #666666;
-  font-family: Arial;
-  color: #ffffff;
-  font-size: 50px;
-  background: grey;
-  text-decoration: none;
+	color: #ffffff;
+	font-size: 50px;
+	background-color: Transparent;
+	text-decoration: none;
+	cursor:pointer;
 }
 
 button:hover {

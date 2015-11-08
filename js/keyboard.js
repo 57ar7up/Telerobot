@@ -12,7 +12,7 @@ function keyboard(){
 
 	$('body').ready(function(){
 		keyboard = $('#keyboard_input').data('keyboard');
-		
+
 	});
 
 	$('#keyboard_icon').click(function(){

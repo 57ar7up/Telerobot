@@ -14,15 +14,15 @@
 		<!--<script src='js/jquery-2.1.4.min.js'></script>-->
 		<script src='data/keycodes.js'></script>
 		<script src='data/uart_mapping.js'></script>
+		<script src="keyboard/docs/js/jquery.min.js"></script>
 		<script src='js/array.js'></script>
 		<script src='js/screenfull.js'></script>
 		<script src='js/script.js'></script>
 
 		<!-- Keyboard -->
-		<!-- jQuery & jQuery UI + theme (required) -->
-		<link href="keyboard/docs/css/jquery-ui.min.css" id="ui-theme" rel="stylesheet">
-		<script src="keyboard/docs/js/jquery.min.js"></script>
-		<script src="keyboard/docs/js/jquery-ui.min.js"></script>
+		<!-- jQuery UI + theme (required) -->
+		<!--<link href="keyboard/docs/css/jquery-ui.min.css" id="ui-theme" rel="stylesheet">
+		<script src="keyboard/docs/js/jquery-ui.min.js"></script>-->
 		<!-- keyboard widget css & script (required) -->
 		<link href="keyboard/css/keyboard.css" rel="stylesheet">
 		<link href="keyboard/css/keyboard-previewkeyset.css" rel="stylesheet">
@@ -41,7 +41,7 @@
 				text-align: right;
 			}
 		</style>
-		<script src="keyboard/docs/js/jquery.jui_theme_switch.min.js"></script>
+		<!--<script src="keyboard/docs/js/jquery.jui_theme_switch.min.js"></script>-->
 		<script src='js/keyboard.js'></script>
 		<!-- Keyboard end -->
 
@@ -49,61 +49,66 @@
 			$(function(){
 
 				state = 'work'; // 'test', 'work' - Состояния интерфейса (отладка / работа)
+				motors_stop_symbol = ' ';
+
 				//keyboard(); //Current problems: activating keyboard when focus is on whole page
 				var pressed_keys = []; //Array with keycodes of pressed keyboard keys. (Windows limit is 6 simultaneously)
 
-
 				$(window).on('resize', fix_size);
 				fix_size();
+				last_keycode = null;
 
-				$('body')/*
-					.keypress(function(event){
-						keycode = event.which;
-						console.info(keycode);
-					})*/
+				$('body')
 					.keydown(function(event){ //Обработка опускания кнопки клавиатуры
-						// Getting info about current command
 						keycode = event.which;
-						console.info(keycode);
-						//event.preventDefault();
-						process_button(keycode);
-						pressed_keys.push(keycode);
-						pressed_keys.Unique;
-						current_command = get_command_by_code(keycode, uart_mapping);
-						commands = keys_to_commands_and_status_keys_display(pressed_keys);
+						if(keycode != last_keycode){
+							last_keycode = keycode;
+							console.info(keycode);
+							//event.preventDefault();
+							process_button(keycode);
+							pressed_keys.push(keycode);
+							pressed_keys.Unique;
+							current_command = get_command_by_code(keycode, uart_mapping);
+							commands = keys_to_commands_and_status_keys_display(pressed_keys);
 
-						// Sending all current commands to serial port
-						if(state == 'work'){
-							command_update_ui(current_command, 'on');
-							commands_process(commands);
+							if(state == 'work'){	//Если рабочий режим, посылаем в серийный интерфейс
+								command_update_ui(current_command, 'on');
+								commands_process(commands);
+							}
 						}
 					})
 					.keyup(function(event){ //Обработка поднятия кнопки клавиатуры
+						last_keycode = null;
 						keycode = event.which;
 						pressed_keys = array_remove(pressed_keys, keycode);
 						current_command = get_command_by_code(keycode, uart_mapping);
-						$('#status_keys').text('');
-						if(state == 'work')
+						if(state == 'work'){
 							command_update_ui(current_command, 'off');
+							commands_process([motors_stop_symbol]);
+						}
 					});
-				$('button')
+				$('button')	//Обработка нажания на экранные кнопки
 					.mousedown(function(){ //Обработка опускания кнопки мыши
 						id = $(this).attr('id');
 						command = id.substr(9);
 						keycode = get_code_by_command(command, uart_mapping);
-						current_command = get_command_by_code(keycode, uart_mapping);
-						commands = keys_to_commands_and_status_keys_display([ keycode ]);
+						if(keycode != last_keycode){
+							last_keycode = keycode;
+							current_command = get_command_by_code(keycode, uart_mapping);
+							commands = keys_to_commands_and_status_keys_display([ keycode ]);
 
-						/* Sending all current commands to serial port */
-						if(state == 'work'){
-							command_update_ui(current_command, 'on');
-							commands_process(commands);
+							if(state == 'work'){	//Если рабочий режим, посылаем в серийный интерфейс
+								command_update_ui(current_command, 'on');
+								commands_process(commands);
+							}
 						}
 					})
 					.mouseup(function(){ //Обработка поднятия кнопки мыши
-						$('#status_keys').text('');
-						if(state == 'work')
+						last_keycode = null;
+						if(state == 'work'){
 							command_update_ui(current_command, 'off');
+							commands_process([motors_stop_symbol]);
+						}
 					})
 				$('#screen').dblclick(full_screen_toggle());
 			});
@@ -116,7 +121,7 @@
 		<div id='center'>
 			<div id='screen'>
 				<div id='status_keys'></div>
-				<img id='stream' src='http://<? echo $_SERVER['HTTP_HOST']; ?>:8080/?action=stream'></img>
+				<img id='stream' src='http://<?php echo $_SERVER['HTTP_HOST']; ?>:8080/?action=stream'></img>
 			</div>
 			<div id="wrap">
 				<pre class="prettyprint lang-html">
@@ -131,13 +136,13 @@
 				Battery
 			</div>
 			<div id='controls_move'>
-				<button id='controls_forward'>W</button>
+				<button id='controls_w'>W</button>
 				<br>
-				<button id='controls_left'>A</button>
+				<button id='controls_a'>A</button>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<button id='controls_right'>D</button>
+				<button id='controls_d'>D</button>
 				<br>
-				<button id='controls_backward'>S</button>
+				<button id='controls_s'>S</button>
 			</div>
 			<div id='controls_speed'>
 				<button id='controls_sp1'>1</button>

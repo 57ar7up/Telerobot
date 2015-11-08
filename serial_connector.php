@@ -19,6 +19,8 @@
 		$serial->confBaudRate($baud_rate);
 		$serial->deviceOpen();
 
+		//$serial->sendMessage('YE'); //Control string
+
 		$serial->sendMessage($actions[0]);
 
 		$serial->deviceClose();

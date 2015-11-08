@@ -37,7 +37,7 @@ function command_update_ui(command, action){
 	if(action == 'on')
 		$('#controls_' + command).css('background-color', 'lime');
 	else if(action == 'off')
-		$('#controls_' + command).css('background-color', 'grey');
+		$('#controls_' + command).css('background-color', 'transparent');
 }
 
 function commands_to_serial_port(commands){
@@ -54,7 +54,7 @@ function keys_to_commands_and_status_keys_display(pressed_keys){
 		commands_text += '<font color=white>' + command + '</font> ';
 		commands.push(command);
 	}
-	//$('#status_keys').html('Pressed keys: ' + keycodes_text + '<br>' + 'Called commands: ' + commands_text);
+	$('#status_keys').html('Pressed keys: ' + keycodes_text + '<br>' + 'Called commands: ' + commands_text);
 	return commands;
 }
 
