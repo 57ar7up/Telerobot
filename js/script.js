@@ -35,7 +35,7 @@ function commands_process(commands){
 
 function command_update_ui(command, action){
 	if(action == 'on')
-		$('#controls_' + command).css('background-color', 'lime');
+		$('#controls_' + command).css('background', 'rgba(128,255,0,0.5)');
 	else if(action == 'off')
 		$('#controls_' + command).css('background-color', 'transparent');
 }

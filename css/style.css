@@ -7,6 +7,7 @@ body {
 	*/
 	margin: 0px;
 	overflow: auto;
+	font-size: 100px;
 }
 
 #screen {
@@ -17,7 +18,7 @@ body {
 	margin: auto;
 
 	color: gold;
-	font: 0px DeusEx; /*50px DeusEx;*/
+	font: 50px DeusEx; /*50px DeusEx;*/
 	border: 1px solid black;
 	background-color: black;
 }
@@ -32,6 +33,7 @@ body {
 }
 
 #status_keys {
+	position: absolute;
 	z-index: 999;
 }
 
@@ -41,25 +43,20 @@ body {
 #keyboard {
 }
 
-#controls {
-}
-
-#controls_move {
+#controls_other {
 	padding-top: 200px;
 }
 
 #controls_speed {
-	padding-top: 100px;
 }
 
 #controls_lights {
-	padding-top: 50px;
 }
 
 #left {
+	position: absolute;
 	width: 17%;
 	float: left;
-	display: none;
 }
 
 #center {
@@ -69,21 +66,41 @@ body {
 
 #right {
 	position: absolute;
-	left: 70%;
+	left: 60%;
 	height: 100%;
 	text-align: center;
 	float: right;
 }
 
+#controls {
+}
+
+#controls_move {
+	padding-top: 200px;
+	padding-left: 100px;
+}
+
+#auth {
+	position: absolute;
+	display: none;
+}
+
 button {
+	font-size: 100px;
 	color: #ffffff;
-	font-size: 50px;
 	background-color: Transparent;
 	text-decoration: none;
 	cursor:pointer;
 }
 
+button.big {
+	font-size: 200px;
+	min-width: 200px;
+}
+
 button:hover {
-  background: orange;
+  background: rgba(255, 128, 0, 0.5);
   text-decoration: none;
 }
+
+.space { margin-top: 100px; }

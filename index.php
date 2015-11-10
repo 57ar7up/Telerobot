@@ -1,5 +1,21 @@
 <?php
+
 	header("Content-Type: text/html; charset=utf-8");
+
+	define('USER', 'admin');
+    define('PASSWORD', '123');
+    if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])){
+        header('WWW-Authenticate: Basic realm="My Realm"');
+        header('HTTP/1.0 401 Unauthorized');
+        die('You choosed cancel');
+    } elseif (isset($_SERVER['PHP_AUTH_USER']) && $_SERVER['PHP_AUTH_USER'] == USER && isset($_SERVER['PHP_AUTH_PW']) && $_SERVER['PHP_AUTH_PW'] == PASSWORD) {
+       	$user = $_SERVER['PHP_AUTH_USER'];
+        $password = $_SERVER['PHP_AUTH_PW'];
+    } else {
+        header('HTTP/1.0 400 Bad Request');
+        die('No access');
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -116,10 +132,18 @@
 	</head>
 	<body>
 		<div id='left'>
-			<span id='controls'></span>
+			<div id='controls_move'>
+				<button id='controls_w' class='big'>↑</button>
+				<div class='space'></div>
+				<button id='controls_s' class='big'>↓</button>
+			</div>
 		</div>
 		<div id='center'>
 			<div id='screen'>
+				<div id='auth'>
+					Hello, <b><?php echo $user; ?></b>
+					<span style='display:none'><?php echo $password; ?></span>
+				</div>
 				<div id='status_keys'></div>
 				<img id='stream' src='http://<?php echo $_SERVER['HTTP_HOST']; ?>:8080/?action=stream'></img>
 			</div>
@@ -136,21 +160,19 @@
 				Battery
 			</div>
 			<div id='controls_move'>
-				<button id='controls_w'>W</button>
-				<br>
-				<button id='controls_a'>A</button>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<button id='controls_d'>D</button>
-				<br>
-				<button id='controls_s'>S</button>
+				<button id='controls_a' class='big'>←</button>
+				&nbsp;&nbsp;&nbsp;
+				<button id='controls_d' class='big'>→</button>
 			</div>
-			<div id='controls_speed'>
-				<button id='controls_sp1'>1</button>
-				<button id='controls_sp2'>2</button>
-				<button id='controls_sp3'>3</button>
-			</div>
-			<div id='controls_lights'>
-				<button id='controls_lights'>Lights</button>
+			<div id='controls_other'>
+				<span id='controls_speed'>
+					<button id='controls_sp1'>1</button>
+					<button id='controls_sp2'>2</button>
+					<button id='controls_sp3'>3</button>
+				</span>
+				<span id='controls_lights'>
+					<button id='controls_lights'>Lights</button>
+				</span>
 			</div>
 		</div>
 </html>
