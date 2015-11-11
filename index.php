@@ -2,10 +2,10 @@
 
 	header("Content-Type: text/html; charset=utf-8");
 
-	define('USER', 'admin');
-    define('PASSWORD', '123');
+	include 'config.php';
+
     if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])){
-        header('WWW-Authenticate: Basic realm="My Realm"');
+        header('WWW-Authenticate: Basic realm="'.APP_NAME.'"');
         header('HTTP/1.0 401 Unauthorized');
         die('You choosed cancel');
     } elseif (isset($_SERVER['PHP_AUTH_USER']) && $_SERVER['PHP_AUTH_USER'] == USER && isset($_SERVER['PHP_AUTH_PW']) && $_SERVER['PHP_AUTH_PW'] == PASSWORD) {
@@ -21,7 +21,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Робот дистанционного присутствия</title>
+		<title>Робот телеприсутствия (<?php echo APP_NAME; ?>)</title>
 		<style>
 			@import 'css/style.css';
 			@import 'css/fonts.css';
@@ -63,19 +63,21 @@
 
 		<script>
 			$(function(){
+				//preventLongPressMenu(document.getElementById('symbol')); //Это должно предотвращать появление контекстного меню при долгом тапе, но не помогает
 
 				state = 'work'; // 'test', 'work' - Состояния интерфейса (отладка / работа)
-				motors_stop_symbol = ' ';
+				motors_stop_symbol = ' '; //Символ (команда) остановки моторов
 
 				//keyboard(); //Current problems: activating keyboard when focus is on whole page
 				var pressed_keys = []; //Array with keycodes of pressed keyboard keys. (Windows limit is 6 simultaneously)
 
 				$(window).on('resize', fix_size);
 				fix_size();
-				last_keycode = null;
+				last_keycode = null;	//So we're not sending same command in row over and over again
 
 				$('body')
 					.keydown(function(event){ //Обработка опускания кнопки клавиатуры
+						event.preventDefault();
 						keycode = event.which;
 						if(keycode != last_keycode){
 							last_keycode = keycode;
@@ -108,14 +110,16 @@
 						id = $(this).attr('id');
 						command = id.substr(9);
 						keycode = get_code_by_command(command, uart_mapping);
-						if(keycode != last_keycode){
-							last_keycode = keycode;
-							current_command = get_command_by_code(keycode, uart_mapping);
-							commands = keys_to_commands_and_status_keys_display([ keycode ]);
+						if(keycode != false){	//Trasmitting only defined commands
+							if(keycode != last_keycode){
+								last_keycode = keycode;
+								current_command = get_command_by_code(keycode, uart_mapping);
+								commands = keys_to_commands_and_status_keys_display([ keycode ]);
 
-							if(state == 'work'){	//Если рабочий режим, посылаем в серийный интерфейс
-								command_update_ui(current_command, 'on');
-								commands_process(commands);
+								if(state == 'work'){	//Если рабочий режим, посылаем в серийный интерфейс
+									command_update_ui(current_command, 'on');
+									commands_process(commands);
+								}
 							}
 						}
 					})
@@ -133,9 +137,9 @@
 	<body>
 		<div id='left'>
 			<div id='controls_move'>
-				<button id='controls_w' class='big'>↑</button>
+				<button id='controls_w' class='big'><span id='symbol'>↑</span></button>
 				<div class='space'></div>
-				<button id='controls_s' class='big'>↓</button>
+				<button id='controls_s' class='big'><span id='symbol'>↓</span></button>
 			</div>
 		</div>
 		<div id='center'>
@@ -171,7 +175,7 @@
 					<button id='controls_sp3'>3</button>
 				</span>
 				<span id='controls_lights'>
-					<button id='controls_lights'>Lights</button>
+					<button id='controls_l'>Lights</button>
 				</span>
 			</div>
 		</div>

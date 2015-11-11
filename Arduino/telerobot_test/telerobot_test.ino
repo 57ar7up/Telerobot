@@ -16,6 +16,7 @@ AF_Stepper motor2(200, 2);
 long baud_rate = 57600;	//Speed of Serial Peripheral Interface, 1 baud = 1 bps (bits per second) Can be 2000000. Arduino serial monitor limit is 115200
 int motor_speed = 150;		//Set maximum speed of motor. 0 (0V) - 255 (full voltage)
 
+char last_symbol;
 byte descript[2];
 
 //SoftwareSerial Serial1(pin_RX, pin_TX); //Configuring serial connection with built-in library. Serial buffer is 64 bytes
@@ -32,21 +33,30 @@ void setup(){
 }
 
 void loop(){
-  if(Serial.available() > 0){
-    while(Serial.available() > 0){
-      /*
+  if(Serial.available() > 1){
+    //while(Serial.available() > 0){
+      
       if(Serial.read()=='Y'){
-        for(byte i=0; i < 2; i++){
+        for(byte i=0; i < 3; i++){
           descript[i] = Serial.read();    
         }        
         if((descript[0] == 'E')){
           char current_symbol = descript[1];
           command_exec(current_symbol);
         }
-      }*/
-      char current_symbol = Serial.read();
-      command_exec(current_symbol);
-    }
+      } else {
+        for(byte i=0; i < 255; i++){
+         Serial.read();    
+        } 
+      } 
+        /*char current_symbol = Serial.read();
+        if(last_symbol == 'Y'){
+          command_exec(current_symbol);
+        }
+        last_symbol = current_symbol;*/
+      //char current_symbol = Serial.read();
+      //command_exec(current_symbol);
+    //}
   }
 }
 

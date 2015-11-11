@@ -26,6 +26,8 @@ function get_code_by_command(command, command_mapping){
 	for(c in command_mapping){ console.info(command_mapping[c][0])
 		if(c == command)
 			return command_mapping[c][0];
+		else
+			return false
 	}
 }
 
@@ -87,4 +89,20 @@ function fix_size() {
 			img.width('100%');
 		}
 	}
+}
+
+function absorbEvent_(event){
+	var e = event || window.event;
+	e.preventDefault && e.preventDefault();
+	e.stopPropagation && e.stopPropagation();
+	e.cancelBubble = true;
+	e.returnValue = false;
+	return false;
+}
+
+function preventLongPressMenu(node){
+	node.ontouchstart = absorbEvent_;
+	node.ontouchmove = absorbEvent_;
+	node.ontouchend = absorbEvent_;
+	node.ontouchcancel = absorbEvent_;
 }

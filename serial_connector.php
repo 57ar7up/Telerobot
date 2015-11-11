@@ -8,6 +8,8 @@
 	$uart = '/dev/ttyATH0'; //'/../dev/ttyATH0';
 	$baud_rate = 57600;
 
+	$null_byte = '\0';
+
 	if($test_mode)
 		serial_test();
 
@@ -19,7 +21,7 @@
 		$serial->confBaudRate($baud_rate);
 		$serial->deviceOpen();
 
-		$serial->sendMessage('YE'); //Control string
+		$serial->sendMessage('Y+=Z'); //Control string
 
 		$serial->sendMessage($actions[0]);
 
