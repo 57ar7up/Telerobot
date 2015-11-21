@@ -22,6 +22,7 @@
 <html>
 	<head>
 		<title>Робот телеприсутствия (<?php echo APP_NAME; ?>)</title>
+		<meta name="viewport" content="User-scalable=no,minimum-scale=1.0,maximum-scale=1.0" />
 		<style>
 			@import 'css/style.css';
 			@import 'css/fonts.css';
@@ -65,7 +66,7 @@
 			$(function(){
 				//preventLongPressMenu(document.getElementById('symbol')); //Это должно предотвращать появление контекстного меню при долгом тапе, но не помогает
 
-				state = 'work'; // 'test', 'work' - Состояния интерфейса (отладка / работа)
+				state = 'test'; // 'test', 'work' - Состояния системы (отладка / работа)
 				motors_stop_symbol = ' '; //Символ (команда) остановки моторов
 
 				//keyboard(); //Current problems: activating keyboard when focus is on whole page
@@ -74,6 +75,12 @@
 				$(window).on('resize', fix_size);
 				fix_size();
 				last_keycode = null;	//So we're not sending same command in row over and over again
+
+				if(state == 'work'){
+					$('#stream').attr('src', "http://<?php echo $_SERVER['HTTP_HOST']; ?>:8080/?action=stream");
+				} else {
+					$('#stream').hide();
+				}
 
 				$('body')
 					.keydown(function(event){ //Обработка опускания кнопки клавиатуры
@@ -89,10 +96,9 @@
 							current_command = get_command_by_code(keycode, uart_mapping);
 							commands = keys_to_commands_and_status_keys_display(pressed_keys);
 
-							if(state == 'work'){	//Если рабочий режим, посылаем в серийный интерфейс
-								command_update_ui(current_command, 'on');
+							command_update_ui(current_command, 'on');
+							if(state == 'work')		//Если рабочий режим, посылаем в серийный интерфейс
 								commands_process(commands);
-							}
 						}
 					})
 					.keyup(function(event){ //Обработка поднятия кнопки клавиатуры
@@ -100,35 +106,40 @@
 						keycode = event.which;
 						pressed_keys = array_remove(pressed_keys, keycode);
 						current_command = get_command_by_code(keycode, uart_mapping);
-						if(state == 'work'){
-							command_update_ui(current_command, 'off');
+
+						status_keys_display();
+						command_update_ui(current_command, 'off');
+						if(state == 'work')
 							commands_process([motors_stop_symbol]);
-						}
 					});
 				$('button')	//Обработка нажания на экранные кнопки
-					.mousedown(function(){ //Обработка опускания кнопки мыши
+					.bind('mousedown touchstart', function(){ //Обработка опускания кнопки мыши
 						id = $(this).attr('id');
 						command = id.substr(9);
-						keycode = get_code_by_command(command, uart_mapping);
+						keycode = get_code_by_command(command, uart_mapping); console.info(keycode);
 						if(keycode != false){	//Trasmitting only defined commands
 							if(keycode != last_keycode){
 								last_keycode = keycode;
 								current_command = get_command_by_code(keycode, uart_mapping);
 								commands = keys_to_commands_and_status_keys_display([ keycode ]);
 
-								if(state == 'work'){	//Если рабочий режим, посылаем в серийный интерфейс
-									command_update_ui(current_command, 'on');
+								command_update_ui(current_command, 'on');
+								if(state == 'work')	//Если рабочий режим, посылаем в серийный интерфейс
 									commands_process(commands);
-								}
 							}
 						}
 					})
-					.mouseup(function(){ //Обработка поднятия кнопки мыши
+					.bind('mouseup touchend', function(){ //Обработка поднятия кнопки мыши
 						last_keycode = null;
-						if(state == 'work'){
-							command_update_ui(current_command, 'off');
+						id = $(this).attr('id');
+						command = id.substr(9);
+						keycode = get_code_by_command(command, uart_mapping); console.info(keycode);
+						current_command = get_command_by_code(keycode, uart_mapping);
+
+						status_keys_display();
+						command_update_ui(current_command, 'off');
+						if(state == 'work')
 							commands_process([motors_stop_symbol]);
-						}
 					})
 				$('#screen').dblclick(full_screen_toggle());
 			});
@@ -149,7 +160,7 @@
 					<span style='display:none'><?php echo $password; ?></span>
 				</div>
 				<div id='status_keys'></div>
-				<img id='stream' src='http://<?php echo $_SERVER['HTTP_HOST']; ?>:8080/?action=stream'></img>
+				<img id='stream'></img>
 			</div>
 			<div id="wrap">
 				<pre class="prettyprint lang-html">

@@ -23,12 +23,11 @@ function get_command_by_code(code, command_mapping){
 }
 
 function get_code_by_command(command, command_mapping){
-	for(c in command_mapping){ console.info(command_mapping[c][0])
+	found = false;
+	for(c in command_mapping)
 		if(c == command)
-			return command_mapping[c][0];
-		else
-			return false
-	}
+			found = command_mapping[c][0];
+	return found;
 }
 
 function commands_process(commands){
@@ -38,8 +37,12 @@ function commands_process(commands){
 function command_update_ui(command, action){
 	if(action == 'on')
 		$('#controls_' + command).css('background', 'rgba(128,255,0,0.5)');
-	else if(action == 'off')
-		$('#controls_' + command).css('background-color', 'transparent');
+	else if(action == 'off'){
+		$('#controls_' + command).css('background', 'transparent');
+		$('#controls_' + command)
+			.hover(function(){ $(this).css('background', 'rgba(255, 128, 0, 0.5)'); })
+			.mouseleave(function(){ $(this).css('background', 'transparent'); });
+	}
 }
 
 function commands_to_serial_port(commands){
@@ -47,7 +50,7 @@ function commands_to_serial_port(commands){
 }
 
 function keys_to_commands_and_status_keys_display(pressed_keys){
-	var commands = []; console.info(pressed_keys)
+	var commands = []; console.info(pressed_keys);
 	var keycodes_text = '', commands_text = '';
 	for(var i=0; i<pressed_keys.length; i++) {
 		keycode = pressed_keys[i];
@@ -56,8 +59,15 @@ function keys_to_commands_and_status_keys_display(pressed_keys){
 		commands_text += '<font color=white>' + command + '</font> ';
 		commands.push(command);
 	}
-	$('#status_keys').html('Pressed keys: ' + keycodes_text + '<br>' + 'Called commands: ' + commands_text);
+	status_keys_display([keycodes_text, commands_text]);
 	return commands;
+}
+
+function status_keys_display(data){
+	if(Array.isArray(data))
+		$('#status_keys').html('Pressed keys: ' + data[0] + '<br>' + 'Called commands: ' + data[1]);
+	else
+		$('#status_keys').html('');
 }
 
 
